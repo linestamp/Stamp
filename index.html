@@ -3,10 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ジョークスタンプメーカー（注意：本物の送付機能ではありません）</title>
-
-<meta property="og:title" content="ジョークスタンプが届いています（本物ではありません）">
-<meta property="og:description" content="開くとジョークであることが明示される、いたずら用の企画ページです。">
+<title>スタンプが届きました</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -20,9 +17,6 @@
     --line: #d9dcdf;
     --accent: #2f5fa8;
     --accent-ink: #1d3f73;
-    --warn-bg: #fff4e5;
-    --warn-border: #e3a008;
-    --warn-ink: #7a4e00;
   }
   *{ box-sizing:border-box; }
   html,body{ height:100%; }
@@ -36,13 +30,12 @@
     padding: max(28px, env(safe-area-inset-top)) 16px 48px;
     line-height:1.7;
   }
-  .wrap{ width:100%; max-width:460px; }
+  .wrap{ width:100%; max-width:420px; }
 
   h1.page-title{
     font-size:14px;
     font-weight:700;
     color:var(--ink-soft);
-    text-align:left;
     margin:0 0 12px;
     letter-spacing:.02em;
   }
@@ -53,19 +46,6 @@
     border-radius:8px;
     padding:24px;
   }
-
-  .warn-box{
-    background:var(--warn-bg);
-    border:1px solid var(--warn-border);
-    color:var(--warn-ink);
-    border-radius:6px;
-    padding:12px 14px;
-    margin-bottom:20px;
-    font-size:13px;
-    font-weight:700;
-    line-height:1.7;
-  }
-  .warn-box span{ display:block; font-weight:400; margin-top:4px; }
 
   label{
     display:block;
@@ -79,7 +59,7 @@
   .field-row input[type=number]{ width:90px; flex:none; }
   .field-row span{ font-size:13px; color:var(--ink-soft); }
 
-  input[type=text], input[type=number]{
+  input[type=text], input[type=number], input[type=url]{
     width:100%;
     padding:10px 12px;
     border:1px solid var(--line);
@@ -88,6 +68,7 @@
     font-family:inherit;
     background:#fff;
     color:var(--ink);
+    letter-spacing:.02em;
   }
   input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
 
@@ -104,11 +85,7 @@
   .img-drop img{ max-width:110px; max-height:110px; border-radius:4px; display:block; margin:0 auto 8px; object-fit:contain; }
   input[type=file]{ display:none; }
 
-  button{
-    font-family:inherit;
-    cursor:pointer;
-    border:none;
-  }
+  button{ font-family:inherit; cursor:pointer; border:none; }
   .btn-main{
     width:100%;
     margin-top:22px;
@@ -134,17 +111,21 @@
     display:none;
   }
   .result.show{ display:block; }
-  .result p{ margin:0 0 10px; font-size:13px; color:var(--ink-soft); }
-  .link-row{ display:flex; gap:8px; }
-  .link-row input{ flex:1; background:#fff; font-size:12px; }
-  .link-row button{
-    padding:0 14px;
-    border-radius:6px;
-    background:var(--accent);
-    color:#fff;
-    font-weight:700;
-    font-size:13px;
-    white-space:nowrap;
+  .result p{ margin:0 0 8px; font-size:13px; color:var(--ink-soft); }
+  .code-display{
+    font-size:24px; font-weight:700; letter-spacing:.1em;
+    text-align:center; padding:10px; background:#fff; border:1px solid var(--line);
+    border-radius:6px; margin-bottom:12px;
+  }
+  textarea{
+    width:100%; min-height:90px; resize:vertical;
+    padding:10px 12px; border:1px solid var(--line); border-radius:6px;
+    font-size:13px; font-family:inherit; background:#fff; color:var(--ink);
+  }
+  .copy-row{ display:flex; gap:8px; margin-top:8px; }
+  .copy-row button{
+    padding:8px 14px; border-radius:6px; background:var(--accent); color:#fff;
+    font-weight:700; font-size:13px; white-space:nowrap;
   }
   .hint{ font-size:12px; color:var(--ink-soft); margin-top:10px; line-height:1.6; }
   .error{
@@ -154,82 +135,105 @@
   }
   .error.show{ display:block; }
 
-  /* ---------- 受け取り(閲覧)画面 ---------- */
   .stage{ text-align:left; }
-  .status{
-    font-size:13px;
-    color:var(--ink-soft);
-    font-weight:700;
-    margin-bottom:12px;
+
+  .sent-line{
+    font-size:14px; font-weight:700; color:var(--ink);
+    margin-bottom:16px; line-height:1.6;
   }
-  .countdown{
-    display:flex; gap:10px; margin-bottom:18px;
-  }
-  .countdown div{
-    flex:1; text-align:center; background:#fafafa; border:1px solid var(--line);
-    border-radius:6px; padding:10px 0;
-  }
-  .countdown b{ display:block; font-size:20px; }
-  .countdown span{ font-size:11px; color:var(--ink-soft); }
 
   .image-box{
-    width:140px; height:140px;
-    margin:0 0 16px;
-    border-radius:6px;
-    background:#fafafa;
-    border:1px solid var(--line);
-    display:flex; align-items:center; justify-content:center;
-    overflow:hidden;
-    color:var(--ink-soft);
-    font-size:12px;
+    width:160px; height:160px; margin:0 auto 18px; border-radius:6px;
+    background:#fafafa; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+    color:var(--ink-soft); font-size:12px;
   }
   .image-box img{ width:100%; height:100%; object-fit:contain; display:none; }
   .image-box.unlocked img{ display:block; }
 
-  .stamp-name{ font-size:17px; font-weight:700; margin-bottom:4px; }
-  .coin-row{
+  .stamp-title{
+    font-size:24px; font-weight:700; margin-bottom:4px; text-align:center;
+  }
+  .detail-link-wrap{
+    text-align:center;
+    margin-bottom:14px;
+  }
+  .detail-link{
     display:inline-block;
+    font-size:13px;
+    color:var(--accent);
+    text-decoration:underline;
+    font-weight:500;
+  }
+  .detail-link:hover{ color:var(--accent-ink); }
+
+  .coin-row{
+    display:block; text-align:center;
     background:#f3f3f3; color:var(--ink);
-    padding:4px 10px; border-radius:4px;
-    font-weight:700; font-size:13px;
-    margin:4px 0 14px;
+    padding:6px 10px; border-radius:4px; font-weight:700; font-size:14px; margin:0 0 18px;
   }
   .meta-table{ font-size:13px; color:var(--ink-soft); line-height:2; }
   .meta-table b{ color:var(--ink); font-weight:700; }
 
-  .footer-note{
-    margin-top:16px;
+  .back-link{
+    display:inline-block; margin-top:16px; font-size:12px; color:var(--ink-soft);
+    text-decoration:underline; cursor:pointer; background:none; border:none; padding:0;
+  }
+
+  /* 目立たない隠しボタン */
+  .secret-spot{
+    display:block;
+    text-align:center;
+    margin-top:28px;
     font-size:11px;
-    color:var(--ink-soft);
-    text-align:left;
+    color:#c7cbcd;
+    cursor:default;
+    user-select:none;
+    background:none; border:none; width:100%; padding:6px 0;
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- ================= 作成画面 ================= -->
-  <div id="creator">
-    <h1 class="page-title">ジョークスタンプメーカー</h1>
+  <!-- ================= コード入力画面 ================= -->
+  <div id="entry">
+    <h1 class="page-title">LINEスタンプ受け取りコード入力</h1>
     <div class="card">
-      <div class="warn-box">
-        これは本物のLINEスタンプ送付機能ではありません。
-        <span>友だち向けの「いたずら用リンク」を作るツールです。リンクを開いた相手にも、必ずジョークだと分かる画面が表示されます。</span>
-      </div>
+      <label for="e-code">受け取りコード</label>
+      <input id="e-code" type="text" placeholder="受け取りコードを入力" maxlength="12" autocomplete="off">
+
+      <button class="btn-main" id="btn-check">確認する</button>
+      <div class="progress-note" id="entry-progress">確認しています…</div>
+      <div class="error" id="entry-error"></div>
+
+      <button class="secret-spot" id="secret-btn" type="button">・</button>
+    </div>
+  </div>
+
+  <!-- ================= 作成画面(隠し) ================= -->
+  <div id="creator" style="display:none;">
+    <h1 class="page-title">コードの発行</h1>
+    <div class="card">
+      <label for="f-from">送信者の名前</label>
+      <input id="f-from" type="text" placeholder="例" maxlength="30">
 
       <label for="f-name">スタンプの名前</label>
       <input id="f-name" type="text" placeholder="例：おめでとうスタンプ" maxlength="40">
 
+      <label for="f-detail-url">「スタンプの詳細」のリンク先URL（任意）</label>
+      <input id="f-detail-url" type="url" placeholder="例：https://example.com">
+
       <label for="f-coin">コイン数</label>
       <input id="f-coin" type="number" placeholder="例：120" min="0">
 
-      <label for="f-to">受け取る人の名前</label>
+      <label for="f-to">宛名（受け取る人の名前）</label>
       <input id="f-to" type="text" placeholder="例：たろう" maxlength="30">
 
-      <label for="f-time">受け取るまでの日数</label>
+      <label for="f-time">受け取り期限</label>
       <div class="field-row">
         <input id="f-time" type="number" min="0" max="365" value="1">
-        <span>日後に受け取れる設定になります</span>
+        <span>日以内</span>
       </div>
 
       <label>スタンプ画像</label>
@@ -238,62 +242,54 @@
         <input type="file" id="f-image" accept="image/*">
       </div>
 
-      <button class="btn-main" id="btn-create">リンクを発行する</button>
-      <div class="progress-note" id="progress-note">保存を確認しています…</div>
+      <button class="btn-main" id="btn-create">コードを発行する</button>
+      <div class="progress-note" id="create-progress">保存しています…</div>
       <div class="error" id="create-error"></div>
 
       <div class="result" id="result">
-        <p>発行されたリンクです。友だちにこのまま送ってください。</p>
-        <div class="link-row">
-          <input type="text" id="result-link" readonly>
-          <button id="btn-copy">コピー</button>
+        <p>発行されたコードです。</p>
+        <div class="code-display" id="result-code"></div>
+
+        <p>送信用のテンプレート文（コピーしてそのまま送れます）</p>
+        <textarea id="result-template" readonly></textarea>
+        <div class="copy-row">
+          <button id="btn-copy-code">コードをコピー</button>
+          <button id="btn-copy-template">文章をコピー</button>
         </div>
-        <div class="hint">開いた相手には必ず「ジョークです」という表示が出ます。相手を驚かせたい場合でも、実在の贈り物や金銭が絡むと誤解させる使い方はしないでください。</div>
+        <div class="hint">このページのURLをまだ知らない相手には、テンプレート文の中のURLも一緒に送ってください。</div>
       </div>
+
+      <button class="back-link" id="btn-back">コード入力画面に戻る</button>
     </div>
   </div>
 
-  <!-- ================= 受け取り(閲覧)画面 ================= -->
+  <!-- ================= 受け取り(表示)画面 ================= -->
   <div id="viewer" style="display:none;">
     <h1 class="page-title">スタンプの受け取り</h1>
     <div class="card">
-      <div class="warn-box">
-        これはジョークです。
-        <span>実際にスタンプやコインが贈られたわけではありません。知人が作成したいたずら企画のページです。</span>
-      </div>
+      <div id="v-content" class="stage">
+        <div class="sent-line" id="v-sent-line"></div>
 
-      <div id="v-loading" class="stage">
-        <div class="status">読み込み中…</div>
-      </div>
-
-      <div id="v-content" class="stage" style="display:none;">
-        <div class="status" id="v-status"></div>
-        <div class="countdown" id="v-countdown">
-          <div><b id="v-d">0</b><span>日</span></div>
-          <div><b id="v-h">0</b><span>時間</span></div>
-          <div><b id="v-m">0</b><span>分</span></div>
-          <div><b id="v-s">0</b><span>秒</span></div>
-        </div>
-
-        <div class="image-box" id="v-image-box">
-          <span id="v-image-placeholder">受け取り後に表示されます</span>
+        <div class="image-box unlocked" id="v-image-box">
           <img id="v-image">
         </div>
 
-        <div class="stamp-name" id="v-name"></div>
-        <div class="coin-row">コイン相当：<span id="v-coin"></span></div>
+        <div class="stamp-title" id="v-name"></div>
+        <div class="detail-link-wrap" id="v-detail-wrap" style="display:none;">
+          <a class="detail-link" id="v-detail-link" href="#" target="_blank" rel="noopener noreferrer">スタンプの詳細</a>
+        </div>
+
+        <div class="coin-row">コイン：<span id="v-coin"></span></div>
 
         <div class="meta-table">
+          <div>送信者：<b id="v-from"></b></div>
           <div>宛先：<b id="v-to"></b></div>
-          <div>種別：<b>ジョークスタンプ（非実在）</b></div>
+          <div>受け取りまで：<b id="v-days"></b></div>
         </div>
       </div>
 
-      <div id="v-notfound" style="display:none; padding:8px 0; color:var(--ink-soft); font-size:13px;">
-        このリンクは無効か、削除されています。
-      </div>
+      <button class="back-link" id="btn-back2">別のコードを試す</button>
     </div>
-    <div class="footer-note">このページはジョーク用に作成されたものです。実在のLINEスタンプ機能とは一切関係ありません。</div>
   </div>
 
 </div>
@@ -301,15 +297,11 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  initializeFirestore,
-  persistentLocalCache,
-  persistentMultipleTabManager,
-  collection,
-  addDoc,
+  getFirestore,
   doc,
+  setDoc,
   getDoc,
   getDocFromServer,
-  onSnapshot,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -324,30 +316,92 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = initializeFirestore(app, {
-  localCache: persistentLocalCache({
-    tabManager: persistentMultipleTabManager()
-  })
-});
+const db = getFirestore(app);
 
 const COLLECTION = "jokeStamps";
-const MAX_IMAGE_DIMENSION = 480;   // px
-const MAX_BASE64_BYTES = 700000;   // 約700KB。Firestoreの1ドキュメント上限(1MiB)に対して余裕を持たせる
+const MAX_IMAGE_DIMENSION = 480;
+const MAX_BASE64_BYTES = 700000;
 
-const params = new URLSearchParams(location.search);
-const viewId = params.get("id");
+const entryEl = document.getElementById("entry");
+const creatorEl = document.getElementById("creator");
+const viewerEl = document.getElementById("viewer");
 
-if (viewId) {
-  document.getElementById("creator").style.display = "none";
-  document.getElementById("viewer").style.display = "block";
-  runViewer(viewId);
-} else {
-  runCreator();
+// 10回連打の判定処理
+let secretClickCount = 0;
+let secretTimer = null;
+
+document.getElementById("secret-btn").addEventListener("click", () => {
+  secretClickCount++;
+  clearTimeout(secretTimer);
+
+  if (secretClickCount >= 10) {
+    secretClickCount = 0;
+    entryEl.style.display = "none";
+    creatorEl.style.display = "block";
+    return;
+  }
+
+  // 1秒以内に次のタップがないとカウントをリセット
+  secretTimer = setTimeout(() => {
+    secretClickCount = 0;
+  }, 1000);
+});
+
+document.getElementById("btn-back").addEventListener("click", () => {
+  creatorEl.style.display = "none";
+  entryEl.style.display = "block";
+  secretClickCount = 0;
+});
+document.getElementById("btn-back2").addEventListener("click", () => {
+  viewerEl.style.display = "none";
+  entryEl.style.display = "block";
+  document.getElementById("e-code").value = "";
+  secretClickCount = 0;
+});
+
+// ---------------- コード入力 ----------------
+const codeInput = document.getElementById("e-code");
+const entryError = document.getElementById("entry-error");
+const entryProgress = document.getElementById("entry-progress");
+
+document.getElementById("btn-check").addEventListener("click", async () => {
+  showEntryError("");
+  const code = codeInput.value.trim();
+  if (!code) {
+    showEntryError("コードを入力してください。");
+    return;
+  }
+  entryProgress.classList.add("show");
+  try {
+    let snap;
+    try {
+      snap = await getDocFromServer(doc(db, COLLECTION, code));
+    } catch {
+      snap = await getDoc(doc(db, COLLECTION, code));
+    }
+    if (!snap.exists()) {
+      showEntryError("そのコードは見つかりませんでした。");
+      return;
+    }
+    showStamp(snap.data());
+  } catch (e) {
+    console.error(e);
+    showEntryError("確認に失敗しました。通信環境を確認してもう一度お試しください。");
+  } finally {
+    entryProgress.classList.remove("show");
+  }
+});
+
+function showEntryError(msg){
+  entryError.textContent = msg;
+  entryError.classList.toggle("show", !!msg);
 }
 
 // ---------------- 作成画面 ----------------
-function runCreator(){
+(function initCreator(){
+  const fFrom = document.getElementById("f-from");
   const fName = document.getElementById("f-name");
+  const fDetailUrl = document.getElementById("f-detail-url");
   const fCoin = document.getElementById("f-coin");
   const fTo   = document.getElementById("f-to");
   const fTime = document.getElementById("f-time");
@@ -356,9 +410,10 @@ function runCreator(){
   const drop = document.getElementById("drop");
   const btn = document.getElementById("btn-create");
   const errBox = document.getElementById("create-error");
-  const progressNote = document.getElementById("progress-note");
+  const progressNote = document.getElementById("create-progress");
   const resultBox = document.getElementById("result");
-  const resultLink = document.getElementById("result-link");
+  const resultCode = document.getElementById("result-code");
+  const resultTemplate = document.getElementById("result-template");
 
   let base64Image = "";
 
@@ -386,107 +441,88 @@ function runCreator(){
 
   btn.addEventListener("click", async () => {
     showError("");
+    const from = fFrom.value.trim();
     const name = fName.value.trim();
+    const detailUrl = fDetailUrl.value.trim();
     const coin = Number(fCoin.value || 0);
     const to = fTo.value.trim();
     const days = Math.max(0, Math.min(365, Number(fTime.value || 0)));
 
-    if (!name || !to || !base64Image) {
-      showError("スタンプ名・受け取る人の名前・画像は必須です。");
+    if (!from || !name || !to || !base64Image) {
+      showError("送信者の名前・スタンプ名・宛名・画像は必須です。");
+      return;
+    }
+
+    if (detailUrl && !/^https?:\/\//i.test(detailUrl)) {
+      showError("リンク先URLは http:// または https:// から始まる形式で入力してください。");
       return;
     }
 
     btn.disabled = true;
     btn.textContent = "作成中…";
     progressNote.classList.add("show");
-    progressNote.textContent = "保存しています…";
+    progressNote.textContent = "コードを生成しています…";
 
     try {
+      const code = String(Math.floor(100000 + Math.random() * 900000));
+      
+      progressNote.textContent = "保存しています…";
+
       const nowMs = Date.now();
-      const docRef = await addDoc(collection(db, COLLECTION), {
-        name,
-        coin,
-        to,
+      const docRef = doc(db, COLLECTION, code);
+      
+      await setDoc(docRef, {
+        from, name, detailUrl, coin, to,
         waitDays: days,
         createdAtMs: nowMs,
-        targetAtMs: nowMs + days * 24 * 60 * 60 * 1000,
         image: base64Image,
         createdAt: serverTimestamp()
       });
 
-      // オフラインキャッシュにより addDoc は即座に解決してしまうため、
-      // ここで実際にサーバーへ書き込めたことを確認してからリンクを発行する。
-      progressNote.textContent = "サーバーへの保存を確認しています…";
-      await confirmServerWrite(docRef);
-
-      const link = `${location.origin}${location.pathname}?id=${docRef.id}`;
-      resultLink.value = link;
+      const baseUrl = `${location.origin}${location.pathname}`;
+      resultCode.textContent = code;
+      resultTemplate.value =
+`${from}さんからLINEスタンプのプレゼントが届きました！
+下のURLを開いて、コードを入力して受け取ってください。
+URL：${baseUrl}
+コード：${code}`;
       resultBox.classList.add("show");
     } catch (e) {
       console.error(e);
       showError(describeError(e));
     } finally {
       btn.disabled = false;
-      btn.textContent = "リンクを発行する";
+      btn.textContent = "コードを発行する";
       progressNote.classList.remove("show");
     }
   });
 
-  document.getElementById("btn-copy").addEventListener("click", () => {
-    resultLink.select();
-    navigator.clipboard?.writeText(resultLink.value).catch(()=>{});
-    document.getElementById("btn-copy").textContent = "コピー済み";
-    setTimeout(() => { document.getElementById("btn-copy").textContent = "コピー"; }, 1500);
+  document.getElementById("btn-copy-code").addEventListener("click", () => {
+    navigator.clipboard?.writeText(resultCode.textContent).catch(()=>{});
+    flashCopied("btn-copy-code");
   });
+  document.getElementById("btn-copy-template").addEventListener("click", () => {
+    navigator.clipboard?.writeText(resultTemplate.value).catch(()=>{});
+    flashCopied("btn-copy-template");
+  });
+
+  function flashCopied(id){
+    const b = document.getElementById(id);
+    const original = b.textContent;
+    b.textContent = "コピーしました";
+    setTimeout(() => { b.textContent = original; }, 1500);
+  }
 
   function showError(msg){
     errBox.textContent = msg;
     errBox.classList.toggle("show", !!msg);
   }
-}
-
-// 書き込みが実際にサーバーへ届いたこと(保留中でないこと)を確認する。
-// タイムアウトやパーミッションエラーの場合は分かりやすいエラーに変換する。
-function confirmServerWrite(docRef, timeoutMs = 10000){
-  return new Promise((resolve, reject) => {
-    let settled = false;
-    const timer = setTimeout(() => {
-      if (settled) return;
-      settled = true;
-      unsubscribe();
-      reject(new Error("timeout"));
-    }, timeoutMs);
-
-    const unsubscribe = onSnapshot(
-      docRef,
-      { includeMetadataChanges: true },
-      (snap) => {
-        if (settled) return;
-        if (snap.exists() && !snap.metadata.hasPendingWrites) {
-          settled = true;
-          clearTimeout(timer);
-          unsubscribe();
-          resolve();
-        }
-      },
-      (err) => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        unsubscribe();
-        reject(err);
-      }
-    );
-  });
-}
+})();
 
 function describeError(e){
   const code = e?.code || "";
   if (code.includes("permission-denied")) {
     return "保存できませんでした（権限エラー）。Firestoreのセキュリティルールで書き込みが許可されているか確認してください。";
-  }
-  if (e?.message === "timeout") {
-    return "サーバーへの保存確認がタイムアウトしました。通信環境を確認してもう一度お試しください。";
   }
   if (code.includes("unavailable")) {
     return "サーバーに接続できませんでした。通信環境を確認してもう一度お試しください。";
@@ -494,8 +530,6 @@ function describeError(e){
   return "保存に失敗しました。通信環境を確認してもう一度お試しください。";
 }
 
-// 画像を長辺 maxDim 以下にリサイズして base64(JPEG) で返す。
-// これによりFirestoreの1ドキュメント1MiB上限を超えて保存に失敗する問題を防ぐ。
 function resizeImageToBase64(file, maxDim){
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -527,86 +561,32 @@ function resizeImageToBase64(file, maxDim){
   });
 }
 
-// ---------------- 受け取り(閲覧)画面 ----------------
-async function runViewer(id){
-  const loadingEl = document.getElementById("v-loading");
-  const contentEl = document.getElementById("v-content");
-  const notFoundEl = document.getElementById("v-notfound");
+// ---------------- 受け取り(表示)画面 ----------------
+function showStamp(data){
+  entryEl.style.display = "none";
+  viewerEl.style.display = "block";
 
-  let data;
-  try {
-    // キャッシュの古いデータを掴まないよう、まずサーバーから直接取得を試みる。
-    let snap;
-    try {
-      snap = await getDocFromServer(doc(db, COLLECTION, id));
-    } catch {
-      snap = await getDoc(doc(db, COLLECTION, id));
-    }
-    if (!snap.exists()) {
-      loadingEl.style.display = "none";
-      notFoundEl.style.display = "block";
-      return;
-    }
-    data = snap.data();
-  } catch (e) {
-    console.error(e);
-    loadingEl.style.display = "none";
-    notFoundEl.style.display = "block";
-    notFoundEl.textContent = "読み込みに失敗しました。通信環境を確認してください。";
-    return;
-  }
+  const from = data.from || "匿名";
+  const to = data.to || "匿名";
 
-  loadingEl.style.display = "none";
-  contentEl.style.display = "block";
-
-  document.getElementById("v-name").textContent = data.name || "(名称未設定)";
-  document.getElementById("v-coin").textContent = `${data.coin ?? 0} コイン`;
-  document.getElementById("v-to").textContent = data.to || "ー";
+  document.getElementById("v-sent-line").textContent = `${from}さんから${to}さんにスタンプが送られました`;
   document.getElementById("v-image").src = data.image || "";
+  document.getElementById("v-name").textContent = data.name || "(名称未設定)";
 
-  const statusEl = document.getElementById("v-status");
-  const countdownEl = document.getElementById("v-countdown");
-  const boxEl = document.getElementById("v-image-box");
-  const placeholderEl = document.getElementById("v-image-placeholder");
-
-  // targetAtMs があればそれを使用。無い(過去バージョンの)データは即時受け取り扱い。
-  const targetAtMs = typeof data.targetAtMs === "number" ? data.targetAtMs : Date.now();
-
-  function tick(){
-    const remain = targetAtMs - Date.now();
-    if (remain <= 0) {
-      reveal();
-      return;
-    }
-    const d = Math.floor(remain / 86400000);
-    const h = Math.floor((remain % 86400000) / 3600000);
-    const m = Math.floor((remain % 3600000) / 60000);
-    const s = Math.floor((remain % 60000) / 1000);
-    document.getElementById("v-d").textContent = d;
-    document.getElementById("v-h").textContent = String(h).padStart(2,"0");
-    document.getElementById("v-m").textContent = String(m).padStart(2,"0");
-    document.getElementById("v-s").textContent = String(s).padStart(2,"0");
-    statusEl.textContent = "この日数が経過すると受け取れる設定です（ジョークです）";
-  }
-
-  if (targetAtMs - Date.now() <= 0) {
-    reveal();
+  const detailWrap = document.getElementById("v-detail-wrap");
+  const detailLink = document.getElementById("v-detail-link");
+  if (data.detailUrl && /^https?:\/\//i.test(data.detailUrl)) {
+    detailLink.href = data.detailUrl;
+    detailWrap.style.display = "block";
   } else {
-    tick();
-    const timer = setInterval(() => {
-      if (targetAtMs - Date.now() <= 0) {
-        clearInterval(timer);
-      }
-      tick();
-    }, 1000);
+    detailWrap.style.display = "none";
+    detailLink.removeAttribute("href");
   }
 
-  function reveal(){
-    countdownEl.style.display = "none";
-    placeholderEl.style.display = "none";
-    boxEl.classList.add("unlocked");
-    statusEl.textContent = "受け取りました（もちろんジョークです）";
-  }
+  document.getElementById("v-coin").textContent = `${data.coin ?? 0} コイン`;
+  document.getElementById("v-from").textContent = from;
+  document.getElementById("v-to").textContent = to;
+  document.getElementById("v-days").textContent = `${data.waitDays ?? 0}日`;
 }
 </script>
 </body>
